@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Studio Ra</title>
+  <link rel="preload" href="assets/fonts/circular-std/CircularStd-Book.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- INTRO / PRELOADER                            -->
+  <!-- ════════════════════════════════════════════ -->
+  <div class="intro" id="intro">
+    <div class="intro__purple"></div>
+    <div class="intro__lottie" id="introLottie"></div>
+    <div class="intro__progress" id="introProgress">
+      <div class="intro__progress-bar" id="introProgressBar"></div>
+    </div>
+  </div>
+
+  <!-- Global fixed 3D canvas — visible across all sections -->
+  <canvas id="modelCanvas" class="global-canvas"></canvas>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- TEXT OVERLAYS — direct body children         -->
+  <!-- position:fixed works ONLY here, not inside   -->
+  <!-- any section with transform/overflow          -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <!-- Phase 1: Arabic poem — left side -->
+  <div class="about__text about__text--left" id="aboutText1">
+    <p class="about__arabic" dir="rtl">وما انتفاعُ أخي الدنيا بناظره،<br>إذا استوت عنده الأنوار والظُلَمُ.</p>
+    <p class="about__english"><em>and what benefit does a mortal man derive from his eyes, when all alike in his sight
+        are lights and darknesses?</em><br>– al-Mutanabbi</p>
+  </div>
+
+  <!-- Phase 2: Arabic about Ra — right side -->
+  <div class="about__text about__text--right" id="aboutText2">
+    <p class="about__arabic" dir="rtl">اسمنا رَ، وهو فعل أمر من رأى،<br>يرى. نستمتع بالبناء، نحب أن<br>نرى فعلاً، ما
+      وراء الانطباع.</p>
+    <p class="about__english"><em>Our name is Ra, the imperative of 'to see'. We delight in building.<br>We love to
+        truly see, to look beyond first impressions.</em></p>
+  </div>
+
+  <!-- Phase 3: English practice text — left side -->
+  <div class="about__text about__text--left" id="aboutText3">
+    <p class="about__english-large">Working at the intersection of strategic thinking and genuine artistic exploration.
+    </p>
+    <p class="about__english-large">Our practice spans branding, creative campaigns, and design; each approached with
+      conceptual <em>depth</em> and <em>visual conviction</em>.</p>
+  </div>
+
+  <!-- Phase 4: English Ra exists text — right side -->
+  <div class="about__text about__text--right" id="aboutText4">
+    <p class="about__english-large" style="text-align:center">Ra exists in the space between the intimacy and artistic
+      ambition of boutique studios and the strategic discipline and production excellence of international agencies.
+      That space is where we were found, and where we choose to work.</p>
+  </div>
+
+  <!-- Phase 5: Final title (moved to video heading) -->
+  <!-- <div class="about__text about__text--center" id="aboutText5">
+    <h2 class="about__final-title">Ra Means See. Look!</h2>
+  </div> -->
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SERVICES TEXT OVERLAYS (boomerang section)   -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <div class="about__text about__text--right" id="servicesText1">
+    <p class="about__english-large">A Creative Studio</p>
+  </div>
+
+  <div class="about__text about__text--left" id="servicesText2">
+    <p class="about__english-large">Working at the intersection of strategic thinking and genuine artistic exploration.
+    </p>
+    <p class="about__english-large">Our practice spans branding, creative campaigns, and design; each approached with
+      conceptual <em>depth</em> and <em>visual conviction</em>.</p>
+  </div>
+
+  <div class="about__text about__text--left" id="servicesText3">
+    <p class="about__english-large">Ra exists in the space between the intimacy and artistic ambition of boutique
+      studios and the strategic discipline and production excellence of international agencies. That space is where we
+      were found, and where we choose to work.</p>
+  </div>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- HERO SECTION                                 -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <section class="hero" id="hero">
+
+    <!-- Hero nav — right-aligned links -->
+    <nav class="hero__nav">
+      <ul class="hero__nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#services">Services</a></li>
+        <li><a href="#cases">Cases</a></li>
+        <li><a href="#work">Work</a></li>
+      </ul>
+    </nav>
+
+    <!-- Large canvas that pans with cursor -->
+    <div class="hero__canvas" id="heroCanvas">
+      <div class="hero__img img-1">
+        <img
+          src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&dpr=1"
+          alt="">
+      </div>
+      <div class="hero__img img-2">
+        <img
+          src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=360&h=280&dpr=1"
+          alt="">
+      </div>
+      <div class="hero__img img-3">
+        <img
+          src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=380&h=460&dpr=1"
+          alt="">
+      </div>
+      <div class="hero__img img-4">
+        <img
+          src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&dpr=1"
+          alt="">
+      </div>
+      <div class="hero__img img-5">
+        <img
+          src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=360&h=400&dpr=1"
+          alt="">
+      </div>
+      <div class="hero__img img-6">
+        <img
+          src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=380&h=460&dpr=1"
+          alt="">
+      </div>
+      <div class="hero__img img-7">
+        <img
+          src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=340&h=320&dpr=1"
+          alt="">
+      </div>
+      <div class="hero__img img-8">
+        <img
+          src="https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg?auto=compress&cs=tinysrgb&w=360&h=360&dpr=1"
+          alt="">
+      </div>
+
+      <span class="hero__text txt-1">Reframed Familiarity</span>
+      <span class="hero__text txt-2">Strategic Wit</span>
+      <span class="hero__text txt-3">Unconventional Logic</span>
+      <span class="hero__text txt-4">Ra's practice spans branding, creative campaigns, and design</span>
+      <span class="hero__text txt-5">Curiosity Trigger</span>
+      <span class="hero__text txt-6">Creativity must be artistically alive and purposefully driven.</span>
+      <span class="hero__text txt-7">Controlled Subversion</span>
+      <span class="hero__text txt-8">Intelligent Play</span>
+    </div>
+
+    <h1 class="hero__title">STUDIO RA</h1>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- ABOUT SECTION — 3D Model only, no text       -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <!-- Global sticky header — hides on scroll down, shows on scroll up -->
+  <header class="site-header" id="siteHeader">
+    <div class="site-header__logo" id="siteHeaderLogo">
+      <svg viewBox="0 0 1268.3 177" xmlns="http://www.w3.org/2000/svg" class="site-header__logo-svg">
+        <path d="M96.6,53.1c-1.7-9.3-9.3-23.9-30.9-23.9s-26.5,10.3-26.5,21.5,6,16.7,18.4,19.1l23.7,4.5c30.9,6,47.4,26.1,47.4,50s-21.8,52.4-61.2,52.4S2.6,147.8,0,123.7l30.6-8.1c1.4,16.7,13.2,31.8,37.1,31.8s27.5-8.8,27.5-20.8-7.4-17.5-20.6-20.1l-23.7-4.8c-27-5.5-44.5-23-44.5-48.6S33.5,0,65.5,0s56.9,24.9,60.8,44l-29.7,9.1Z"/>
+        <path d="M227.5,34.9v138.3h-33.2V34.9h-53.6V3.6h140.4v31.3h-53.6Z"/>
+        <path d="M303.3,113.1V3.6h33v107.2c0,22.2,12.4,34,32.1,34s32.3-11.7,32.3-34V3.6h33v109.5c0,41.6-28.9,63.9-65.3,63.9s-65.1-22.2-65.1-63.9Z"/>
+        <path d="M470.8,173.2V3.6h60.8c48.3,0,83.7,31.3,83.7,84.9s-35.6,84.7-84,84.7h-60.5ZM530.1,142.6c27.7,0,50.9-17.2,50.9-54.1s-23-54.3-50.7-54.3h-26.5v108.4h26.3Z"/>
+        <path d="M644,173.2V3.6h33.5v169.6h-33.5Z"/>
+        <path d="M793.2,0c46.2,0,87.3,33.7,87.3,88.5s-41.1,88.3-87.3,88.3-87.1-33.7-87.1-88.3S747.3,0,793.2,0ZM793.2,144.7c26.3,0,53.1-18.2,53.1-56.4s-26.8-56.4-53.1-56.4-52.9,18.2-52.9,56.4,26.8,56.4,52.9,56.4Z"/>
+        <path d="M1018.8,107.9h-17.2v65.3h-33.2V3.6h66.3c33,0,54.1,22.7,54.1,52.1s-13.9,41.6-36.1,48.1l36.4,69.4h-36.8l-33.2-65.3ZM1028.4,79.4c16.7,0,26.6-9.6,26.6-23.4s-9.8-23.7-26.6-23.7h-26.8v47.1h26.8Z"/>
+        <path d="M1218.3,134.4h-68.9l-14.1,38.7h-34.9L1165.5,3.6h38.3l64.6,169.6h-35.9l-14.1-38.7ZM1160.4,104.3h46.9l-23.4-64.1-23.4,64.1Z"/>
+      </svg>
+    </div>
+    <div class="site-header__right">
+      <span class="site-header__cta" id="siteNavCta">Work with us!</span>
+      <nav class="site-header__nav">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#cases">Cases</a>
+        <a href="#work">Work</a>
+      </nav>
+      <button class="site-header__burger" id="siteHeaderBurger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <section class="about" id="about">
+    <div class="about__sticky">
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- SERVICES SECTION — boomerang slides L→R→L    -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <section class="services" id="services">
+    <div class="services__sticky">
+      <div class="services__text services__text--right" id="servicesText1">
+        <p class="about__english-large">A Creative Studio</p>
+      </div>
+      <div class="services__text services__text--left" id="servicesText2">
+        <p class="about__english-large">Working at the intersection of strategic thinking and genuine artistic
+          exploration.</p>
+        <p class="about__english-large">Our practice spans branding, creative campaigns, and design; each approached
+          with conceptual <em>depth</em> and <em>visual conviction</em>.</p>
+      </div>
+      <div class="services__text services__text--left" id="servicesText3">
+        <p class="about__english-large">Ra exists in the space between the intimacy and artistic ambition of boutique
+          studios and the strategic discipline and production excellence of international agencies. That space is where
+          we were found, and where we choose to work.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- REEL INTRO + VIDEO SECTION                   -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <!-- ══ REEL INTRO commented out ══
+  <section class="reel-intro" id="reelIntro">
+    <h2 class="reel-intro__tagline">Rewrite your worth.</h2>
+    <div class="reel-intro__credentials">
+      <p class="reel-intro__label">8x Agency of the Year</p>
+      <div class="reel-intro__badges">
+        <span>AdAge 2026</span>
+        <span>AdAge 2025</span>
+        <span>AdAge 2024</span>
+        <span>AdAge 2023</span>
+      </div>
+      <div class="reel-intro__badges">
+        <span>D&AD 2021</span>
+        <span>AdAge 2021</span>
+        <span>AdAge 2020</span>
+        <span>AdAge 2019</span>
+      </div>
+    </div>
+  </section>
+  ══ END REEL INTRO ══ -->
+
+  <div class="reel-heading">
+    <h2 class="reel-heading__title">Ra Means See. Look!</h2>
+  </div>
+
+  <section class="reel" id="reel">
+    <div class="reel__sticky">
+      <div class="reel__container" id="reelContainer">
+        <video class="reel__video" id="reelVideo" muted loop playsinline preload="auto">
+          <source src="assets/video/15153229_1920_1080_30fps.mp4" type="video/mp4">
+        </video>
+        <button class="reel__play-btn" id="reelPlayBtn" aria-label="Play video with sound">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="23" stroke="#fff" stroke-width="2"/>
+            <path d="M19 15l14 9-14 9V15z" fill="#fff"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- CORE SERVICES SECTION                        -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <section class="core-services" id="coreServices">
+    <div class="core-services__header">
+      <span class="core-services__label">Core Services</span>
+      <h2 class="core-services__title"> Strategy. Art. Form. All three. Always</h2>
+    </div>
+
+    <div class="core-services__list">
+      <div class="core-services__item-wrap">
+        <div class="core-services__item"
+          data-img="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=600">
+          <span class="core-services__number">1.</span>
+          <span class="core-services__name">Design</span>
+          <span class="core-services__arrow">&rarr;</span>
+        </div>
+      </div>
+      <div class="core-services__item-wrap">
+        <div class="core-services__item"
+          data-img="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=600">
+          <span class="core-services__number">2.</span>
+          <span class="core-services__name">Creative Campaign</span>
+          <span class="core-services__arrow">&rarr;</span>
+        </div>
+      </div>
+      <div class="core-services__item-wrap">
+        <div class="core-services__item"
+          data-img="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=600">
+          <span class="core-services__number">3.</span>
+          <span class="core-services__name">Branding</span>
+          <span class="core-services__arrow">&rarr;</span>
+        </div>
+      </div>
+    </div>
+
+    <a href="#" class="core-services__discover">Discover all services (37) <span>&nearr;</span></a>
+
+    <div class="core-services__preview" id="servicePreview">
+      <span class="core-services__preview-label">SERVICE<br>PREVIEW</span>
+      <img class="core-services__preview-img" id="servicePreviewImg" src="" alt="">
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- CASES SECTION                                -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <!-- ══ OLD CASES SECTION (commented out) ══
+  <section class="cases" id="cases-old">
+    <div class="cases__header">
+      <span class="cases__label">What We Do</span>
+      <h2 class="cases__title">Our Expertise</h2>
+      <p class="cases__subtitle">Three focused disciplines, one unified vision for your brand.</p>
+    </div>
+    <div class="cases__grid">
+      <div class="cases__card" data-index="0">
+        <div class="cases__card-inner">
+          <div class="cases__card-front">
+            <span class="cases__card-code">R.1</span>
+            <span class="cases__card-label">Re-branding</span>
+            <span class="cases__card-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </div>
+          <div class="cases__card-back">
+            <span class="cases__card-code">R.1</span>
+            <p class="cases__card-desc">Reconstructing an existing brand</p>
+            <img class="cases__card-img" src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Re-branding">
+            <span class="cases__card-label">Re-branding</span>
+            <span class="cases__card-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <div class="cases__card" data-index="1">
+        <div class="cases__card-inner">
+          <div class="cases__card-front">
+            <span class="cases__card-code">N.2</span>
+            <span class="cases__card-label">New Brands</span>
+            <span class="cases__card-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </div>
+          <div class="cases__card-back">
+            <span class="cases__card-code">N.2</span>
+            <p class="cases__card-desc">Building brands from the ground up</p>
+            <img class="cases__card-img" src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=400" alt="New Brands">
+            <span class="cases__card-label">New Brands</span>
+            <span class="cases__card-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </div>
+        </div>
+      </div>
+      <div class="cases__card" data-index="2">
+        <div class="cases__card-inner">
+          <div class="cases__card-front">
+            <span class="cases__card-code">B.3</span>
+            <span class="cases__card-label">Brand Expansions</span>
+            <span class="cases__card-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </div>
+          <div class="cases__card-back">
+            <span class="cases__card-code">B.3</span>
+            <p class="cases__card-desc">Extending your brand into new territories</p>
+            <img class="cases__card-img" src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=400" alt="Brand Expansions">
+            <span class="cases__card-label">Brand Expansions</span>
+            <span class="cases__card-toggle"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  ══ END OLD CASES SECTION ══ -->
+
+  <!-- ══ NEW CASES SECTION — landscape cards with hover blur ══ -->
+  <section class="casesv2" id="cases">
+    <div class="casesv2__header">
+      <span class="casesv2__label">Case Studies</span>
+      <h2 class="casesv2__title">Our Practice Beyond Sight</h2>
+    </div>
+
+    <div class="casesv2__grid">
+      <a href="#" class="casesv2__card">
+        <img class="casesv2__card-img" loading="lazy"
+          src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQPjv33fXPTT0sRyXGnS99dZCBj8IQTz9PO_27d50R_o57UJv8R"
+          alt="Re-branding case study">
+        <div class="casesv2__card-overlay"></div>
+        <div class="casesv2__card-content">
+          <span class="casesv2__card-eyebrow">Discover the full story
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M7 17L17 7M7 7h10v10" />
+            </svg>
+          </span>
+          <span class="casesv2__card-tag">Case Studies</span>
+          <h3 class="casesv2__card-title">TEST TITLE OF CASE STUDY</h3>
+          <p class="casesv2__card-desc">Ra practice spans branding,<br>creative campaigns, and design.</p>
+        </div>
+      </a>
+
+      <a href="#" class="casesv2__card">
+        <img class="casesv2__card-img" loading="lazy"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRKsUBVfOgA8rpsTcniYqzLAMeKqgneuC-zPy54xp84X6A6Im2W"
+          alt="New brands case study">
+        <div class="casesv2__card-overlay"></div>
+        <div class="casesv2__card-content">
+          <span class="casesv2__card-eyebrow">Discover the full story
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M7 17L17 7M7 7h10v10" />
+            </svg>
+          </span>
+          <span class="casesv2__card-tag">Case Studies</span>
+          <h3 class="casesv2__card-title">TEST TITLE OF CASE STUDY</h3>
+          <p class="casesv2__card-desc">Ra practice spans branding,<br>creative campaigns, and design.</p>
+        </div>
+      </a>
+
+      <a href="#" class="casesv2__card">
+        <img class="casesv2__card-img" loading="lazy"
+          src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQPjv33fXPTT0sRyXGnS99dZCBj8IQTz9PO_27d50R_o57UJv8R"
+          alt="Brand expansions case study">
+        <div class="casesv2__card-overlay"></div>
+        <div class="casesv2__card-content">
+          <span class="casesv2__card-eyebrow">Discover the full story
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M7 17L17 7M7 7h10v10" />
+            </svg>
+          </span>
+          <span class="casesv2__card-tag">Case Studies</span>
+          <h3 class="casesv2__card-title">TEST TITLE OF CASE STUDY</h3>
+          <p class="casesv2__card-desc">Ra practice spans branding,<br>creative campaigns, and design.</p>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- WORK SECTION — horizontal scroll             -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <section class="work" id="work">
+    <div class="work__trigger">
+      <div class="work__header">
+        <span class="work__label">Work</span>
+        <h2 class="work__title">Made With Intention.</h2>
+        <div class="work__scroll-hint">
+
+
+        </div>
+      </div>
+
+      <div class="work__slider" id="workSlider">
+        <div class="work__slider-track" id="workSliderTrack">
+          <div class="work__card">
+            <div class="work__card-inner">
+              <img class="work__card-img"
+                src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&dpr=1"
+                alt="Brand Identity">
+            </div>
+          </div>
+          <div class="work__card">
+            <div class="work__card-inner">
+              <img class="work__card-img"
+                src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&dpr=1"
+                alt="Campaign">
+            </div>
+          </div>
+          <div class="work__card">
+            <div class="work__card-inner">
+              <img class="work__card-img"
+                src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&dpr=1"
+                alt="Visual System">
+            </div>
+          </div>
+          <div class="work__card">
+            <div class="work__card-inner">
+              <img class="work__card-img"
+                src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&dpr=1"
+                alt="Packaging">
+            </div>
+          </div>
+          <div class="work__card">
+            <div class="work__card-inner">
+              <img class="work__card-img"
+                src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=600&h=600&dpr=1"
+                alt="Digital">
+            </div>
+          </div>
+          <div class="work__spacer"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- FOOTER                                       -->
+  <!-- ════════════════════════════════════════════ -->
+
+  <footer class="footer" id="footer">
+    <canvas id="footerCanvas" class="footer__canvas"></canvas>
+    <div class="footer__top">
+      <div class="footer__cta">
+        <p class="footer__cta-text">Every vision needs a first conversation.<br>This could be yours.</p>
+        <a href="mailto:hello@studio-ra.co" class="footer__email">hello@studio-ra.co</a>
+      </div>
+      <div class="footer__right">
+        <div class="footer__socials">
+          <a href="#" class="footer__social-link">Instagram</a>
+          <a href="#" class="footer__social-link">Behance</a>
+          <a href="#" class="footer__social-link">LinkedIn</a>
+        </div>
+        <div class="footer__clock" id="footerClock"></div>
+        <div class="footer__newsletter">
+          <input type="email" placeholder="Sign for our Friday brain sessions!" class="footer__newsletter-input">
+          <button class="footer__newsletter-btn" aria-label="Subscribe">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
+        <div class="footer__info">
+          <p>Amman, Jordan, Queen Noor st. Housing Bank Complex.</p>
+          <p>Terms and Privacy Policy. &copy; Studio Ra Ltd. All rights reserved.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <nav class="footer__nav">
+        <a href="#about">About</a>
+        <span>•</span>
+        <a href="#services">Services</a>
+        <span>•</span>
+        <a href="#cases">Cases</a>
+        <span>•</span>
+        <a href="#work">Work</a>
+      </nav>
+    </div>
+
+    <div class="footer__big-name">STUDIO RA</div>
+  </footer>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script>
+    (function () {
+      var lenis = new Lenis({
+        duration: 1.4,
+        easing: function (t) { return Math.min(1, 1.001 - Math.pow(2, -10 * t)); },
+        smoothWheel: true,
+        touchMultiplier: 1.8,
+      });
+
+      lenis.on('scroll', window.ScrollTrigger.update);
+
+      window.gsap.ticker.add(function (time) {
+        lenis.raf(time * 1000);
+      });
+      window.gsap.ticker.lagSmoothing(0);
+
+      window.__lenis = lenis;
+
+      if (document.getElementById('intro')) {
+        lenis.stop();
+      }
+
+      document.addEventListener(
+        'click',
+        function (e) {
+          var a = e.target && e.target.closest && e.target.closest('a[href^="#"]');
+          if (!a) return;
+          var hash = a.getAttribute('href');
+          if (!hash || hash === '#') return;
+          var el = document.querySelector(hash);
+          if (!el) return;
+          e.preventDefault();
+          lenis.scrollTo(el, {
+            duration: 1.35,
+            easing: function (t) {
+              return Math.min(1, 1.001 - Math.pow(2, -10 * t));
+            },
+            offset: 0,
+          });
+        },
+        true
+      );
+    })();
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
+  <script src="js/intro.js"></script>
+  <script src="js/parallax.js"></script>
+  <script type="module" src="js/model.js"></script>
+  <script src="js/reel.js"></script>
+  <script src="js/core-services.js" defer></script>
+  <script src="js/cases.js" defer></script>
+  <script src="js/work.js" defer></script>
+  <script type="module" src="js/footer-model.js"></script>
+  <script>
+    (function () {
+      var cl = document.getElementById('footerClock');
+      if (!cl) return;
+      cl.style.transition = 'opacity 0.3s';
+      function tick() {
+        var d = new Date();
+        var h = d.getHours();
+        var m = String(d.getMinutes()).padStart(2, '0');
+        var s = String(d.getSeconds()).padStart(2, '0');
+        var ap = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        cl.textContent = h + ':' + m + ':' + s + ' ' + ap;
+      }
+      tick(); setInterval(tick, 1000);
+    })();
+  </script>
+  <script>
+    (function () {
+      var gsap = window.gsap;
+      var ScrollTrigger = window.ScrollTrigger;
+      var header = document.getElementById('siteHeader');
+      var cta = document.getElementById('siteNavCta');
+      var heroNav = document.querySelector('.hero__nav');
+      var heroTitle = document.querySelector('.hero__title');
+      if (!header || !heroTitle) return;
+
+      // Position hero title centered
+      function setHeroTitleStart() {
+        var rect = heroTitle.getBoundingClientRect();
+        gsap.set(heroTitle, {
+          x: window.innerWidth / 2 - rect.width / 2,
+          y: window.innerHeight / 2 - rect.height / 2,
+          scale: 1,
+          transformOrigin: 'top left',
+        });
+      }
+      setHeroTitleStart();
+
+      // Animate hero title shrinking to top-left + nav links fade
+      var heroTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '#hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 0.4,
+        },
+      });
+
+      if (heroNav) {
+        var links = heroNav.querySelectorAll('.hero__nav-links li');
+        links.forEach(function (li, i) {
+          heroTl.to(li, {
+            opacity: 0,
+            x: 40,
+            duration: 0.8,
+            ease: 'power2.inOut',
+          }, 0.1 + 0.15 * i);
+        });
+      }
+
+      // Shrink title toward top-left logo position
+      var startSize = parseFloat(getComputedStyle(heroTitle).fontSize);
+      var targetScale = 27 / startSize;
+      var w = window.innerWidth;
+      var titleEndX = w <= 480 ? 16 : (w <= 768 ? 20 : 40);
+      var titleEndY = w <= 480 ? 14 : (w <= 768 ? 14 : 14);
+
+      heroTl.to(heroTitle, {
+        x: titleEndX,
+        y: titleEndY,
+        scale: targetScale,
+        duration: 1,
+        ease: 'power2.inOut',
+      }, 0.1);
+
+      // Sticky header: show on scroll up, hide on scroll down
+      var lastScroll = 0;
+      var headerVisible = false;
+      var pastHero = false;
+
+      ScrollTrigger.create({
+        trigger: '#hero',
+        start: 'bottom top',
+        onLeave: function () {
+          pastHero = true;
+          // Hide hero title, show sticky header
+          heroTitle.style.opacity = '0';
+          header.classList.add('site-header--visible');
+          headerVisible = true;
+          if (heroNav) heroNav.style.visibility = 'hidden';
+        },
+        onEnterBack: function () {
+          pastHero = false;
+          // Show hero title, hide sticky header
+          heroTitle.style.opacity = '';
+          header.classList.remove('site-header--visible');
+          header.classList.remove('site-header--hidden');
+          headerVisible = false;
+          if (heroNav) heroNav.style.visibility = '';
+        },
+      });
+
+      window.addEventListener('scroll', function () {
+        if (!pastHero) return;
+        var currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+        if (currentScroll > lastScroll && currentScroll > 100) {
+          if (headerVisible) {
+            header.classList.remove('site-header--visible');
+            header.classList.add('site-header--hidden');
+            headerVisible = false;
+          }
+        } else {
+          if (!headerVisible) {
+            header.classList.remove('site-header--hidden');
+            header.classList.add('site-header--visible');
+            headerVisible = true;
+          }
+        }
+        lastScroll = currentScroll <= 0 ? 0 : currentScroll;
+      });
+
+      // Hide CTA on footer/contact sections
+      ScrollTrigger.create({
+        trigger: '#footer',
+        start: 'top 80%',
+        end: 'bottom bottom',
+        onEnter: function () { if (cta) cta.style.display = 'none'; },
+        onLeaveBack: function () { if (cta) cta.style.display = ''; },
+      });
+    })();
+  </script>
+</body>
+
+</html>
