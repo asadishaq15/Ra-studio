@@ -136,35 +136,51 @@ loader.load('assets/models/Mutanabi.glb', (gltf) => {
 
 // ── Boomerang ──────────────────────────────────────────────
 let boomerang = null;
+let boomFloatGroup = null;
 let boomBaseScale = 1;
+let boomFloatActive = false;
+let boomFloatTime = 0;
+
+// Rest pose: Ra “C” facing camera, slight tilt (tuned to match design frame)
+const BOOM_REST_ROT = { x: -0.22, y: 0.28, z: 0.34 };
+const BOOM_HOLD_LEFT = { x: -1.35 * vScale, y: 1.05, z: 0 };
+const BOOM_HOLD_RIGHT = { x: 1.25 * vScale, y: 1.05, z: 0 };
+
+function setBoomFloatActive(timelineTime) {
+  boomFloatActive =
+    (timelineTime >= 1.32 && timelineTime < 1.52) ||
+    (timelineTime >= 2.42 && timelineTime < 5.42);
+}
 
 function loadBoomerang() {
   servicesTexts.forEach(el => { if (el) gsap.set(el, { opacity: 0 }); });
 
   new GLTFLoader().load('assets/models/ra_final.glb', (gltf) => {
-    boomerang = gltf.scene;
+    const boomMesh = gltf.scene;
 
-    boomerang.traverse(child => {
+    boomMesh.traverse(child => {
       if (child.isMesh) child.material.side = THREE.DoubleSide;
     });
 
-    const box = new THREE.Box3().setFromObject(boomerang);
+    const box = new THREE.Box3().setFromObject(boomMesh);
     const size = box.getSize(new THREE.Vector3());
     boomBaseScale = 2.4 / Math.max(size.x, size.y, size.z);
-    boomerang.scale.setScalar(boomBaseScale);
+    boomMesh.scale.setScalar(boomBaseScale);
 
-    boomerang.updateMatrixWorld(true);
-    const scaledBox = new THREE.Box3().setFromObject(boomerang);
+    boomMesh.updateMatrixWorld(true);
+    const scaledBox = new THREE.Box3().setFromObject(boomMesh);
     const scaledCenter = scaledBox.getCenter(new THREE.Vector3());
-    boomerang.position.sub(scaledCenter);
+    boomMesh.position.sub(scaledCenter);
 
+    boomFloatGroup = new THREE.Group();
     const boomPivot = new THREE.Group();
-    boomPivot.add(boomerang);
+    boomFloatGroup.add(boomMesh);
+    boomPivot.add(boomFloatGroup);
     scene.add(boomPivot);
     boomerang = boomPivot;
 
-    gsap.set(boomerang.position, { x: -8 * vScale, y: 1.1, z: 0 });
-    gsap.set(boomerang.rotation, { x: -0.15, y: 0, z: 0.25 });
+    gsap.set(boomerang.position, { x: -8 * vScale, y: BOOM_HOLD_LEFT.y, z: 0 });
+    gsap.set(boomerang.rotation, BOOM_REST_ROT);
 
     const servicesTl = gsap.timeline({
       scrollTrigger: {
@@ -173,8 +189,12 @@ function loadBoomerang() {
         end: 'bottom bottom',
         scrub: true,
         anticipatePin: 1,
+        onUpdate: (self) => {
+          setBoomFloatActive(self.progress * servicesTl.duration());
+        },
       },
       defaults: { ease: 'none' },
+      onUpdate: () => setBoomFloatActive(servicesTl.time()),
     });
 
     // Mutanabi exits, camera resets
@@ -183,23 +203,25 @@ function loadBoomerang() {
       .to(texts[1], { opacity: 0, duration: 0.3 }, 0)
       .to(camera.position, { y: 1.1, z: 4.8, duration: 0.5 }, 0);
 
-    // Phase 1: slide in from left (rotation stays as initial set)
+    // Phase 1: slide in — centered left, Ra shape toward camera
     servicesTl
-      .to(boomerang.position, { x: -1.6 * vScale, y: 1.1, duration: 1 }, 0.4)
+      .to(boomerang.position, { x: BOOM_HOLD_LEFT.x, y: BOOM_HOLD_LEFT.y, duration: 1 }, 0.4)
+      .to(boomerang.rotation, BOOM_REST_ROT, 0.4)
       .to(servicesTexts[0], { opacity: 1, duration: 0.3 }, 0.6)
       .to(servicesTexts[0], { opacity: 0, duration: 0.3 }, 1.2);
 
-    // Phase 2: slide to right and stay — text appears only after boomerang settles
+    // Phase 2: slide to right — hold centered beside copy
     servicesTl
-      .to(boomerang.position, { x: 1.6 * vScale, y: 1.1, duration: 1 }, 1.5)
+      .to(boomerang.position, { x: BOOM_HOLD_RIGHT.x, y: BOOM_HOLD_RIGHT.y, duration: 1 }, 1.5)
+      .to(boomerang.rotation, BOOM_REST_ROT, 1.5)
       .to(servicesTexts[1], { opacity: 1, duration: 0.3 }, 3.8)
       .to(servicesTexts[1], { opacity: 0, duration: 0.3 }, 4.3);
 
-    // Phase 3: hold on right, text on left fades in/out, then exit right
+    // Phase 3: hold on right, then exit
     servicesTl
       .to(servicesTexts[2], { opacity: 1, duration: 0.3 }, 4.7)
       .to(servicesTexts[2], { opacity: 0, duration: 0.4 }, 5.2)
-      .to(boomerang.position, { x: 12 * vScale, y: 1.1, duration: 0.8, ease: 'power3.in' }, 5.5);
+      .to(boomerang.position, { x: 12 * vScale, y: BOOM_HOLD_RIGHT.y, duration: 0.8, ease: 'power3.in' }, 5.5);
 
     ScrollTrigger.refresh();
   }, undefined, (err) => {
@@ -215,6 +237,26 @@ function renderLoop() {
     model.position.x += Math.sin(floatTime) * 0.001;
     model.position.y += Math.cos(floatTime * 0.7) * 0.0005;
   }
+
+  if (boomFloatGroup && boomFloatActive) {
+    boomFloatTime += 0.014;
+    const t = boomFloatTime;
+    // Subtle drift L/R + tiny vertical bob; almost no spin (keeps Ra letter readable)
+    boomFloatGroup.position.set(
+      Math.sin(t) * 0.07,
+      Math.sin(t * 0.65) * 0.035,
+      0
+    );
+    boomFloatGroup.rotation.set(
+      Math.sin(t * 0.5) * 0.012,
+      Math.sin(t * 0.4) * 0.018,
+      Math.cos(t * 0.45) * 0.01
+    );
+  } else if (boomFloatGroup) {
+    boomFloatGroup.position.set(0, 0, 0);
+    boomFloatGroup.rotation.set(0, 0, 0);
+  }
+
   renderer.render(scene, camera);
 }
 

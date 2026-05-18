@@ -1,0 +1,58 @@
+/**
+ * Studio Ra — 56×56px base grid
+ * All spacing uses fractions or multiples of 56px.
+ *
+ *   1/8 =  7px    1/4 = 14px    3/8 = 21px    1/2 = 28px
+ *   5/8 = 35px    3/4 = 42px    7/8 = 49px    1   = 56px
+ *   1.5 = 84px    2   = 112px   3   = 168px   4   = 224px
+ */
+:root {
+  --grid: 56px;
+
+  --grid-1-8: calc(var(--grid) / 8);
+  --grid-1-4: calc(var(--grid) / 4);
+  --grid-3-8: calc(var(--grid) * 3 / 8);
+  --grid-1-2: calc(var(--grid) / 2);
+  --grid-5-8: calc(var(--grid) * 5 / 8);
+  --grid-3-4: calc(var(--grid) * 3 / 4);
+  --grid-7-8: calc(var(--grid) * 7 / 8);
+  --grid-1: var(--grid);
+  --grid-1-5: calc(var(--grid) * 1.5);
+  --grid-2: calc(var(--grid) * 2);
+  --grid-3: calc(var(--grid) * 3);
+  --grid-4: calc(var(--grid) * 4);
+  --grid-5: calc(var(--grid) * 5);
+
+  /* Semantic layout tokens */
+  --space-page-x: var(--grid-1);
+  --space-page-y: var(--grid-2);
+  --space-section: var(--grid-2);
+  --space-block: var(--grid-1);
+  --space-element: var(--grid-1-2);
+  --space-inline: var(--grid-1-4);
+  --space-tight: var(--grid-1-8);
+}
+
+@media (max-width: 1024px) {
+  :root {
+    --space-page-x: var(--grid-3-4);
+    --space-page-y: var(--grid-1-5);
+    --space-section: var(--grid-1-5);
+  }
+}
+
+@media (max-width: 768px) {
+  :root {
+    --space-page-x: var(--grid-1-2);
+    --space-page-y: var(--grid-1);
+    --space-section: var(--grid-1);
+    --space-block: var(--grid-3-4);
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --space-page-x: var(--grid-1-4);
+    --space-page-y: var(--grid-3-4);
+  }
+}
