@@ -1756,11 +1756,12 @@ a {
     border-radius: 13px;
   }
 
-  .casesv2__card:nth-child(2) {
+  .casesv2__card:nth-child(2),
+  .casesv2__card--featured {
     height: 320px;
   }
 
-  .casesv2__card:not(:nth-child(2)) .casesv2__card-img {
+  .casesv2__card:not(:nth-child(2)):not(.casesv2__card--featured) .casesv2__card-img {
     filter: blur(10px);
     transform: scale(1.1);
   }
@@ -1987,6 +1988,12 @@ a {
 
   .casesv2__card {
     height: 220px;
+  }
+
+  .casesv2__card:nth-child(2),
+  .casesv2__card--featured,
+  .casesv2__grid:has(.casesv2__card:hover) .casesv2__card:hover {
+    height: 280px;
   }
 
   .work__header {
