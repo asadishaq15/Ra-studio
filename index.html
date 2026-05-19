@@ -544,7 +544,9 @@
       </nav>
     </div>
 
-    <div class="footer__big-name">STUDIO RA</div>
+    <div class="footer__big-name" aria-label="Studio Ra">
+      <img src="assets/svgs/Ra_Logo.svg" alt="" class="footer__logo-img">
+    </div>
   </footer>
 
   <script type="importmap">
@@ -624,6 +626,15 @@
         var ap = h >= 12 ? 'PM' : 'AM';
         h = h % 12 || 12;
         cl.textContent = h + ':' + m + ':' + s + ' ' + ap;
+        if (cl.animate) {
+          cl.animate(
+            [
+              { transform: 'translateY(2px)', opacity: 0.68 },
+              { transform: 'translateY(0)', opacity: 1 },
+            ],
+            { duration: 420, easing: 'cubic-bezier(0.22, 0.61, 0.36, 1)' }
+          );
+        }
       }
       tick(); setInterval(tick, 1000);
     })();

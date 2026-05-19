@@ -88,7 +88,7 @@ loader.load('assets/models/Mutanabi.glb', (gltf) => {
   const aboutTl = gsap.timeline({
     scrollTrigger: {
       trigger: '#about',
-      start: 'top top',
+      start: 'top 25%',
       end: 'bottom bottom',
       scrub: true,
       anticipatePin: 1,
@@ -101,8 +101,8 @@ loader.load('assets/models/Mutanabi.glb', (gltf) => {
     .to(model.position, { x: 1.4 * vScale, y: -0.5, duration: 0.4, ease: 'power2.out' }, 0)
     .to(model.rotation, { y: 0, duration: 0.4, ease: 'power2.out' }, 0)
     .to(model.scale, { x: baseScale, y: baseScale, z: baseScale, duration: 0.4 }, 0)
-    .to(texts[0], { opacity: 1, duration: 0.3 }, 0.3)
-    .to(texts[0], { opacity: 0, duration: 0.3 }, 0.6);
+    .to(texts[0], { opacity: 1, duration: 0.3 }, 0.7)
+    .to(texts[0], { opacity: 0, duration: 0.3 }, 1.0);
 
   // Phase B: 360 rotation — camera rises so head stays in frame
   aboutTl
@@ -141,8 +141,8 @@ let boomBaseScale = 1;
 let boomFloatActive = false;
 let boomFloatTime = 0;
 
-// Rest pose: Ra “C” facing camera, slight tilt (tuned to match design frame)
-const BOOM_REST_ROT = { x: -0.22, y: 0.28, z: 0.34 };
+// Rest pose: Ra “C” facing camera, slightly tilted downward to match design frame
+const BOOM_REST_ROT = { x: -0.34, y: 0.28, z: 0.32 };
 const BOOM_HOLD_LEFT = { x: -1.35 * vScale, y: 1.05, z: 0 };
 const BOOM_HOLD_RIGHT = { x: 1.25 * vScale, y: 1.05, z: 0 };
 
@@ -185,7 +185,7 @@ function loadBoomerang() {
     const servicesTl = gsap.timeline({
       scrollTrigger: {
         trigger: '#services',
-        start: 'top top',
+        start: 'top 55%',
         end: 'bottom bottom',
         scrub: true,
         anticipatePin: 1,
@@ -243,14 +243,14 @@ function renderLoop() {
     const t = boomFloatTime;
     // Subtle drift L/R + tiny vertical bob; almost no spin (keeps Ra letter readable)
     boomFloatGroup.position.set(
-      Math.sin(t) * 0.07,
-      Math.sin(t * 0.65) * 0.035,
+      Math.sin(t) * 0.06,
+      Math.sin(t * 0.65) * 0.025,
       0
     );
     boomFloatGroup.rotation.set(
-      Math.sin(t * 0.5) * 0.012,
-      Math.sin(t * 0.4) * 0.018,
-      Math.cos(t * 0.45) * 0.01
+      Math.sin(t * 0.5) * 0.006,
+      Math.sin(t * 0.4) * 0.01,
+      Math.cos(t * 0.45) * 0.006
     );
   } else if (boomFloatGroup) {
     boomFloatGroup.position.set(0, 0, 0);
