@@ -5,6 +5,9 @@
   const container = document.getElementById('reelContainer');
   const video = document.getElementById('reelVideo');
   const playBtn = document.getElementById('reelPlayBtn');
+  const lightbox = document.getElementById('reelLightbox');
+  const lightboxVideo = document.getElementById('reelLightboxVideo');
+  const lightboxClose = document.getElementById('reelLightboxClose');
   if (!container) return;
 
   gsap.timeline({
@@ -25,24 +28,36 @@
       duration: 1,
     });
 
-  if (video && playBtn) {
-    function togglePlay() {
-      if (video.muted) {
-        video.muted = false;
-        video.play();
-        playBtn.classList.add('hidden');
-      } else if (video.paused) {
-        video.play();
-        playBtn.classList.add('hidden');
-      } else {
-        video.pause();
-        playBtn.classList.remove('hidden');
-      }
-    }
-
-    playBtn.addEventListener('click', togglePlay);
-    video.addEventListener('click', togglePlay);
+  function openLightbox() {
+    if (!lightbox || !lightboxVideo) return;
+    lightbox.classList.add('active');
+    lightboxVideo.currentTime = 0;
+    lightboxVideo.play();
+    document.body.style.overflow = 'hidden';
   }
+
+  function closeLightbox() {
+    if (!lightbox || !lightboxVideo) return;
+    lightbox.classList.remove('active');
+    lightboxVideo.pause();
+    document.body.style.overflow = '';
+  }
+
+  if (playBtn) playBtn.addEventListener('click', openLightbox);
+  if (video) video.addEventListener('click', openLightbox);
+  if (lightboxClose) lightboxClose.addEventListener('click', closeLightbox);
+
+  if (lightbox) {
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && lightbox && lightbox.classList.contains('active')) {
+      closeLightbox();
+    }
+  });
 
   const modelCanvas = document.getElementById('modelCanvas');
   const fixedOverlays = document.querySelectorAll('.about__text');

@@ -162,17 +162,17 @@ a {
   position: fixed;
   top: 0;
   left: 0;
-  font-family: 'Circular Std', sans-serif;
-  font-size: clamp(72px, 9.5vw, 168px);
-  font-weight: 500;
-  letter-spacing: -0.03em;
-  line-height: 0.9;
-  text-align: center;
+  font-size: 0;
+  line-height: 0;
   z-index: 9002;
-  white-space: nowrap;
   pointer-events: none;
   user-select: none;
-  -webkit-font-smoothing: antialiased;
+}
+
+.hero__title-svg {
+  height: clamp(72px, 9.5vw, 168px);
+  width: auto;
+  display: block;
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -549,6 +549,50 @@ a {
 .reel__play-btn.hidden {
   opacity: 0;
   pointer-events: none;
+}
+
+.reel-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.reel-lightbox.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.reel-lightbox__close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 2;
+  padding: 8px;
+  opacity: 0.8;
+  transition: opacity 0.2s;
+}
+
+.reel-lightbox__close:hover {
+  opacity: 1;
+}
+
+.reel-lightbox__video {
+  width: 100%;
+  max-width: 85vw;
+  max-height: 80vh;
+  border-radius: 8px;
+  object-fit: contain;
 }
 
 .reel-heading {
@@ -1306,7 +1350,9 @@ a {
 }
 
 @keyframes footer-clock-breathe {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 0.72;
   }
 

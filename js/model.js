@@ -142,7 +142,7 @@ let boomFloatActive = false;
 let boomFloatTime = 0;
 
 // Rest pose: Ra “C” facing camera, slightly tilted downward to match design frame
-const BOOM_REST_ROT = { x: -0.52, y: 0.28, z: 0.32 };
+const BOOM_REST_ROT = { x: -0.52, y: 0.28, z: 0.02 };
 const BOOM_HOLD_LEFT = { x: -1.35 * vScale, y: 1.05, z: 0 };
 const BOOM_HOLD_RIGHT = { x: 1.25 * vScale, y: 1.05, z: 0 };
 
