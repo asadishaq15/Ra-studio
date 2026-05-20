@@ -142,7 +142,7 @@ let boomFloatActive = false;
 let boomFloatTime = 0;
 
 // Rest pose: Ra “C” facing camera, slightly tilted downward to match design frame
-const BOOM_REST_ROT = { x: -0.34, y: 0.28, z: 0.32 };
+const BOOM_REST_ROT = { x: -0.52, y: 0.28, z: 0.32 };
 const BOOM_HOLD_LEFT = { x: -1.35 * vScale, y: 1.05, z: 0 };
 const BOOM_HOLD_RIGHT = { x: 1.25 * vScale, y: 1.05, z: 0 };
 
@@ -185,7 +185,7 @@ function loadBoomerang() {
     const servicesTl = gsap.timeline({
       scrollTrigger: {
         trigger: '#services',
-        start: 'top 55%',
+        start: 'top 10%',
         end: 'bottom bottom',
         scrub: true,
         anticipatePin: 1,
@@ -197,16 +197,13 @@ function loadBoomerang() {
       onUpdate: () => setBoomFloatActive(servicesTl.time()),
     });
 
-    // Mutanabi exits, camera resets
+    // Mutanabi exits + boomerang enters simultaneously (no white gap)
     servicesTl
       .to(model.position, { x: -10 * vScale, duration: 0.5, ease: 'power2.in' }, 0)
       .to(texts[1], { opacity: 0, duration: 0.3 }, 0)
-      .to(camera.position, { y: 1.1, z: 4.8, duration: 0.5 }, 0);
-
-    // Phase 1: slide in — centered left, Ra shape toward camera
-    servicesTl
-      .to(boomerang.position, { x: BOOM_HOLD_LEFT.x, y: BOOM_HOLD_LEFT.y, duration: 1 }, 0.4)
-      .to(boomerang.rotation, BOOM_REST_ROT, 0.4)
+      .to(camera.position, { y: 1.1, z: 4.8, duration: 0.5 }, 0)
+      .to(boomerang.position, { x: BOOM_HOLD_LEFT.x, y: BOOM_HOLD_LEFT.y, duration: 1.8, ease: 'power3.out' }, 0)
+      .to(boomerang.rotation, BOOM_REST_ROT, 0)
       .to(servicesTexts[0], { opacity: 1, duration: 0.3 }, 0.6)
       .to(servicesTexts[0], { opacity: 0, duration: 0.3 }, 1.2);
 

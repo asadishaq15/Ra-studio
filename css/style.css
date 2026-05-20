@@ -924,6 +924,13 @@ a {
   gap: var(--grid-1-8);
 }
 
+.casesv2__link-icon {
+  width: 18px;
+  height: 18px;
+  filter: brightness(0) invert(1);
+  opacity: 0.9;
+}
+
 .casesv2__card-tag {
   font-family: 'Circular Std', sans-serif;
   font-size: 23px;
