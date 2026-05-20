@@ -611,7 +611,7 @@ a {
 }
 
 .core-services__item-wrap {
-  padding: var(--grid-1-8) 0;
+  padding: 5.5px 0;
 }
 
 .core-services__item-wrap+.core-services__item-wrap {
@@ -622,7 +622,7 @@ a {
   display: flex;
   align-items: center;
   gap: var(--grid-1-8);
-  padding: var(--grid-3-8) var(--grid-1-2);
+  padding: var(--grid-3-8) 22px;
   background: #eaeaea;
   border-radius: 12px;
   cursor: pointer;
@@ -964,6 +964,7 @@ a {
   z-index: 60;
   width: 100%;
   background: #fff;
+  margin-bottom: var(--grid-3);
 }
 
 .work__trigger {
@@ -1029,12 +1030,12 @@ a {
   flex-shrink: 0;
   overflow: visible;
   position: relative;
-  height: 600px;
+  height: 440px;
 }
 
 .work__card-inner {
   width: 100%;
-  height: 480px;
+  height: 440px;
   background: #0a0a0a;
   border-radius: 13px;
   display: flex;
@@ -1043,8 +1044,8 @@ a {
   overflow: hidden;
   transform: translateZ(0);
   transform-origin: top center;
-  will-change: transform, box-shadow;
-  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+  will-change: transform;
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
 .work__card:hover .work__card-inner {
@@ -1060,7 +1061,7 @@ a {
 }
 
 .work__card:hover .work__card-img {
-  transform: scale(1.06);
+  transform: scale(1.04);
 }
 
 .work__card-text {
