@@ -120,3 +120,5 @@
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Mada:wght@400;500;700&display=swap');
+
+/* Keep Google Fonts import last so local @font-face loads first on Vercel/local */
