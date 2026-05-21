@@ -147,9 +147,7 @@ const BOOM_HOLD_LEFT = { x: -1.35 * vScale, y: 1.05, z: 0 };
 const BOOM_HOLD_RIGHT = { x: 1.25 * vScale, y: 1.05, z: 0 };
 
 function setBoomFloatActive(timelineTime) {
-  boomFloatActive =
-    (timelineTime >= 1.32 && timelineTime < 1.52) ||
-    (timelineTime >= 2.42 && timelineTime < 5.42);
+  boomFloatActive = (timelineTime >= 2.42 && timelineTime < 5.42);
 }
 
 function loadBoomerang() {
@@ -159,7 +157,11 @@ function loadBoomerang() {
     const boomMesh = gltf.scene;
 
     boomMesh.traverse(child => {
-      if (child.isMesh) child.material.side = THREE.DoubleSide;
+      if (child.isMesh) {
+        child.material.side = THREE.DoubleSide;
+        child.material.depthWrite = true;
+        child.material.transparent = false;
+      }
     });
 
     const box = new THREE.Box3().setFromObject(boomMesh);
@@ -176,6 +178,7 @@ function loadBoomerang() {
     const boomPivot = new THREE.Group();
     boomFloatGroup.add(boomMesh);
     boomPivot.add(boomFloatGroup);
+    boomPivot.visible = false;
     scene.add(boomPivot);
     boomerang = boomPivot;
 
@@ -189,6 +192,8 @@ function loadBoomerang() {
         end: 'bottom bottom',
         scrub: true,
         anticipatePin: 1,
+        onEnter: () => { boomerang.visible = true; },
+        onLeaveBack: () => { boomerang.visible = false; },
         onUpdate: (self) => {
           setBoomFloatActive(self.progress * servicesTl.duration());
         },
@@ -217,8 +222,8 @@ function loadBoomerang() {
     // Phase 3: hold on right, then exit
     servicesTl
       .to(servicesTexts[2], { opacity: 1, duration: 0.3 }, 4.7)
-      .to(servicesTexts[2], { opacity: 0, duration: 0.4 }, 5.2)
-      .to(boomerang.position, { x: 12 * vScale, y: BOOM_HOLD_RIGHT.y, duration: 0.8, ease: 'power3.in' }, 5.5);
+      .to(servicesTexts[2], { opacity: 0, duration: 0.3 }, 5.1)
+      .to(boomerang.position, { x: 12 * vScale, y: BOOM_HOLD_RIGHT.y, duration: 0.4, ease: 'power2.in' }, 5.3);
 
     ScrollTrigger.refresh();
   }, undefined, (err) => {
