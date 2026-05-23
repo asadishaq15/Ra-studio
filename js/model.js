@@ -117,7 +117,7 @@ loader.load('assets/models/Mutanabi.glb', (gltf) => {
   const aboutTl = gsap.timeline({
     scrollTrigger: {
       trigger: '#about',
-      start: 'top 25%',
+      start: 'top 40%',
       end: 'bottom bottom',
       scrub: true,
       anticipatePin: 1,
@@ -130,8 +130,8 @@ loader.load('assets/models/Mutanabi.glb', (gltf) => {
     .to(model.position, { x: 1.4 * vScale, y: -0.5, duration: 0.4, ease: 'power2.out' }, 0)
     .to(model.rotation, { y: 0, duration: 0.4, ease: 'power2.out' }, 0)
     .to(model.scale, { x: baseScale, y: baseScale, z: baseScale, duration: 0.4 }, 0)
-    .to(texts[0], { opacity: 1, duration: 0.3 }, 0.7)
-    .to(texts[0], { opacity: 0, duration: 0.3 }, 1.0);
+    .to(texts[0], { opacity: 1, duration: 0.3 }, 0.32)
+    .to(texts[0], { opacity: 0, duration: 0.3 }, 0.62);
 
   // Phase B: 360 rotation — camera rises so head stays in frame
   aboutTl
@@ -300,7 +300,7 @@ function loadBoomerang() {
       scrollTrigger: {
         id: 'servicesScrub',
         trigger: '#services',
-        start: 'top 10%',
+        start: 'top 32%',
         end: () => `+=${Math.round(window.innerHeight * 2.65)}`,
         scrub: true,
         anticipatePin: 1,
@@ -341,17 +341,17 @@ function loadBoomerang() {
       .to(servicesTexts[0], { opacity: 1, duration: 0.3 }, 0.6)
       .to(servicesTexts[0], { opacity: 0, duration: 0.3 }, 1.2);
 
-    // Phase 2: slide to right — longer hold on 2nd left paragraph
+    // Phase 2: slide to right — left copy appears as boom settles on the right
     servicesTl
       .to(boomerang.position, { x: BOOM_HOLD_RIGHT.x, y: BOOM_HOLD_RIGHT.y, duration: 1 }, 1.5)
       .to(boomerang.rotation, BOOM_REST_ROT, 1.5)
-      .to(servicesTexts[1], { opacity: 1, duration: 0.35 }, 3.4)
-      .to(servicesTexts[1], { opacity: 0, duration: 0.35 }, 4.6);
+      .to(servicesTexts[1], { opacity: 1, duration: 0.35 }, 2.35)
+      .to(servicesTexts[1], { opacity: 0, duration: 0.35 }, 3.55);
 
     // Phase 3: last paragraph holds full opacity — fade + exit happen in reel handoff
     servicesTl
-      .to(servicesTexts[2], { opacity: 1, duration: 0.3 }, 5.1)
-      .to({}, { duration: 0.7 }, 5.4);
+      .to(servicesTexts[2], { opacity: 1, duration: 0.3 }, 4.15)
+      .to({}, { duration: 0.7 }, 4.45);
 
     servicesTimeline = servicesTl;
     window.__raHandoff.setBoomOpacity = setBoomOpacity;
