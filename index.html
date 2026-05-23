@@ -105,8 +105,10 @@
       </ul>
     </nav>
 
-    <!-- Large canvas that pans with cursor -->
+    <!-- Large canvas that pans with cursor — 8 imgs + 8 labels (nav = 9th text) -->
     <div class="hero__canvas" id="heroCanvas">
+
+      <!-- Col 1: two images + txt-1 (offset right) -->
       <div class="hero__img img-1">
         <img
           src="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&dpr=1"
@@ -117,45 +119,56 @@
           src="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=360&h=280&dpr=1"
           alt="">
       </div>
-      <div class="hero__img img-3">
+      <span class="hero__text txt-1">Reframed Familiarity</span>
+
+      <!-- Col 2 (left diagonal): txt → img → txt -->
+      <span class="hero__text hero__col--left-diag txt-2">Strategic Wit</span>
+      <div class="hero__img hero__col--left-diag img-3">
         <img
           src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=380&h=460&dpr=1"
           alt="">
       </div>
-      <div class="hero__img img-4">
-        <img
-          src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&dpr=1"
-          alt="">
-      </div>
+      <span class="hero__text hero__col--left-diag txt-3">Unconventional Logic</span>
+
+      <!-- Col 3: two-line txt-4 + image bottom -->
+      <span class="hero__text hero__text--two-line txt-4"><span class="hero__text-line">Ra's practice spans branding,</span><span class="hero__text-line">creative campaigns and design</span></span>
       <div class="hero__img img-5">
         <img
           src="https://images.pexels.com/photos/3184339/pexels-photo-3184339.jpeg?auto=compress&cs=tinysrgb&w=360&h=400&dpr=1"
           alt="">
       </div>
+
+      <!-- Col 4: image top + txt-8 (above bottom) -->
+      <div class="hero__img img-4">
+        <img
+          src="https://images.pexels.com/photos/3184306/pexels-photo-3184306.jpeg?auto=compress&cs=tinysrgb&w=400&h=500&dpr=1"
+          alt="">
+      </div>
+      <span class="hero__text txt-8">Intelligent Play</span>
+
+      <!-- Col 5: two-line txt-6 only -->
+      <span class="hero__text hero__text--two-line txt-6"><span class="hero__text-line">creativity must be artistically</span><span class="hero__text-line">alive and purposefully driven</span></span>
+
+      <!-- Middle: img top → txt-5 → img-7 (bottom edge) -->
       <div class="hero__img img-6">
         <img
           src="https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=380&h=460&dpr=1"
           alt="">
       </div>
+      <span class="hero__text txt-5">Curiosity Trigger</span>
       <div class="hero__img img-7">
         <img
           src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=340&h=320&dpr=1"
           alt="">
       </div>
-      <div class="hero__img img-8">
+
+      <!-- Col 7 (right diagonal): img-8 top → txt-7 → img-7 anchors bottom edge -->
+      <div class="hero__img hero__col--right-diag img-8">
         <img
           src="https://images.pexels.com/photos/3184398/pexels-photo-3184398.jpeg?auto=compress&cs=tinysrgb&w=360&h=360&dpr=1"
           alt="">
       </div>
-
-      <span class="hero__text txt-1">Reframed Familiarity</span>
-      <span class="hero__text txt-2">Strategic Wit</span>
-      <span class="hero__text txt-3">Unconventional Logic</span>
-      <span class="hero__text txt-4">Ra's practice spans branding, creative campaigns, and design</span>
-      <span class="hero__text txt-5">Curiosity Trigger</span>
-      <span class="hero__text txt-6">Creativity must be artistically alive and purposefully driven.</span>
-      <span class="hero__text txt-7">Controlled Subversion</span>
-      <span class="hero__text txt-8">Intelligent Play</span>
+      <span class="hero__text hero__col--right-diag txt-7">Controlled Subversion</span>
     </div>
 
     <h1 class="hero__title"><img src="assets/svgs/Ra_Logo.svg" alt="STUDIO RA" class="hero__title-svg"></h1>
@@ -203,22 +216,7 @@
   <!-- ════════════════════════════════════════════ -->
 
   <section class="services" id="services">
-    <div class="services__sticky">
-      <div class="services__text services__text--right" id="servicesText1">
-        <p class="about__english-large">A Creative Studio</p>
-      </div>
-      <div class="services__text services__text--left" id="servicesText2">
-        <p class="about__english-large">Working at the intersection of strategic thinking and genuine artistic
-          exploration.</p>
-        <p class="about__english-large">Our practice spans branding, creative campaigns, and design; each approached
-          with conceptual <em>depth</em> and <em>visual conviction</em>.</p>
-      </div>
-      <div class="services__text services__text--left" id="servicesText3">
-        <p class="about__english-large">Ra exists in the space between the intimacy and artistic ambition of boutique
-          studios and the strategic discipline and production excellence of international agencies. That space is where
-          we were found, and where we choose to work.</p>
-      </div>
-    </div>
+    <div class="services__sticky"></div>
   </section>
 
   <!-- ════════════════════════════════════════════ -->
@@ -253,7 +251,7 @@
   <section class="reel" id="reel">
     <div class="reel__sticky">
       <div class="reel__container" id="reelContainer">
-        <video class="reel__video" id="reelVideo" muted loop playsinline preload="auto">
+        <video class="reel__video" id="reelVideo" muted loop playsinline preload="metadata">
           <source src="assets/video/15153229_1920_1080_30fps.mp4" type="video/mp4">
         </video>
         <button class="reel__play-btn" id="reelPlayBtn" aria-label="Play video with sound">
@@ -272,9 +270,7 @@
         <line x1="6" y1="6" x2="22" y2="22"/><line x1="22" y1="6" x2="6" y2="22"/>
       </svg>
     </button>
-    <video class="reel-lightbox__video" id="reelLightboxVideo" controls playsinline preload="auto">
-      <source src="assets/video/15153229_1920_1080_30fps.mp4" type="video/mp4">
-    </video>
+    <video class="reel-lightbox__video" id="reelLightboxVideo" controls playsinline preload="none" data-src="assets/video/15153229_1920_1080_30fps.mp4"></video>
   </div>
 
   <!-- ════════════════════════════════════════════ -->
@@ -293,7 +289,7 @@
           data-img="https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=600">
           <span class="core-services__number">1.</span>
           <span class="core-services__name">Design</span>
-          <span class="core-services__arrow">&rarr;</span>
+          <img src="assets/svgs/Link_Icon.svg" alt="" class="core-services__arrow" width="18" height="18">
         </div>
       </div>
       <div class="core-services__item-wrap">
@@ -301,7 +297,7 @@
           data-img="https://images.pexels.com/photos/3182812/pexels-photo-3182812.jpeg?auto=compress&cs=tinysrgb&w=600">
           <span class="core-services__number">2.</span>
           <span class="core-services__name">Creative Campaign</span>
-          <span class="core-services__arrow">&rarr;</span>
+          <img src="assets/svgs/Link_Icon.svg" alt="" class="core-services__arrow" width="18" height="18">
         </div>
       </div>
       <div class="core-services__item-wrap">
@@ -309,7 +305,7 @@
           data-img="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=600">
           <span class="core-services__number">3.</span>
           <span class="core-services__name">Branding</span>
-          <span class="core-services__arrow">&rarr;</span>
+          <img src="assets/svgs/Link_Icon.svg" alt="" class="core-services__arrow" width="18" height="18">
         </div>
       </div>
     </div>

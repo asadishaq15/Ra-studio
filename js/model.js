@@ -56,7 +56,23 @@ dirLight.position.set(3, 5, 4);
 scene.add(dirLight);
 
 let model = null;
+let modelMeshes = [];
+let modelFloatAllowed = true;
 let baseScale = 1;
+
+function setModelOpacity(opacity) {
+  if (!model) return;
+  const t = Math.max(0, Math.min(1, opacity));
+  model.visible = t > 0.02;
+  modelFloatAllowed = t > 0.98;
+  modelMeshes.forEach((mesh) => {
+    if (!mesh.material) return;
+    mesh.material.transparent = true;
+    mesh.material.opacity = t;
+    mesh.material.depthWrite = t > 0.95;
+  });
+}
+
 function signalReady() {
   if (window.__introSignalReady) window.__introSignalReady();
 }
@@ -77,7 +93,20 @@ loader.load('assets/models/Mutanabi.glb', (gltf) => {
   model.position.sub(center);
   baseScale = 3.2 / Math.max(size.x, size.y, size.z);
   model.scale.setScalar(baseScale);
+
+  modelMeshes = [];
+  model.traverse((child) => {
+    if (child.isMesh) {
+      child.material = child.material.clone();
+      child.material.transparent = true;
+      child.material.opacity = 1;
+      child.material.depthWrite = true;
+      modelMeshes.push(child);
+    }
+  });
+
   scene.add(model);
+  setModelOpacity(1);
 
   gsap.set(model.position, { x: 8 * vScale, y: -0.5, z: 0 });
   gsap.set(model.rotation, { x: 0, y: 0, z: 0 });
@@ -137,17 +166,95 @@ loader.load('assets/models/Mutanabi.glb', (gltf) => {
 // ── Boomerang ──────────────────────────────────────────────
 let boomerang = null;
 let boomFloatGroup = null;
+let boomMeshes = [];
 let boomBaseScale = 1;
 let boomFloatActive = false;
 let boomFloatTime = 0;
 
+let handoffTextSnap = null;
+
+function setAboutOverlaysHidden() {
+  texts.forEach((el) => {
+    if (el) gsap.set(el, { opacity: 0 });
+  });
+}
+
+window.__raHandoff = {
+  setBoomOpacity,
+  beginHandoff() {
+    handoffTextSnap = servicesTexts.map((el) =>
+      el ? Number(gsap.getProperty(el, 'opacity')) : 0
+    );
+    setAboutOverlaysHidden();
+  },
+  applyHandoffFade(progress) {
+    const p = Math.max(0, Math.min(1, progress));
+    const fade = 1 - p;
+    if (handoffTextSnap) {
+      servicesTexts.forEach((el, i) => {
+        if (!el) return;
+        gsap.set(el, { opacity: handoffTextSnap[i] * fade });
+      });
+    }
+    setAboutOverlaysHidden();
+    setBoomOpacity(fade);
+    if (p <= 0) handoffTextSnap = null;
+  },
+  resetHandoffTexts() {
+    handoffTextSnap = null;
+    servicesTexts.forEach((el) => {
+      if (el) gsap.set(el, { clearProps: 'opacity' });
+    });
+    setBoomOpacity(1);
+  },
+};
+
+function setBoomOpacity(opacity) {
+  if (!boomerang) return;
+  const t = Math.max(0, Math.min(1, opacity));
+  boomerang.visible = t > 0.02;
+  boomMeshes.forEach((mesh) => {
+    if (!mesh.material) return;
+    mesh.material.transparent = true;
+    mesh.material.opacity = t;
+    mesh.material.depthWrite = t > 0.95;
+  });
+}
+
 // Rest pose: Ra “C” facing camera, slightly tilted downward to match design frame
 const BOOM_REST_ROT = { x: -0.52, y: 0.28, z: 0.02 };
-const BOOM_HOLD_LEFT = { x: -1.35 * vScale, y: 1.05, z: 0 };
-const BOOM_HOLD_RIGHT = { x: 1.25 * vScale, y: 1.05, z: 0 };
+const BOOM_HOLD_LEFT = { x: -0.7 * vScale, y: 1.05, z: 0 };
+const BOOM_HOLD_RIGHT = { x: 1.9 * vScale, y: 1.05, z: 0 };
+
+const SERVICES_SCRUB_MULT = 0.62;
+const BOOM_FLOAT_END = 6.1;
+
+let servicesTimeline = null;
+let servicesScrubPxCached = 0;
+let servicesResizeTimer = null;
+
+function syncServicesSectionHeight(scrubPx) {
+  const el = document.getElementById('services');
+  if (!el) return;
+  const scrubVh = (scrubPx / window.innerHeight) * 100;
+  el.style.height = `${100 + scrubVh}vh`;
+}
+
+function refreshServicesScrollMetrics() {
+  if (!servicesTimeline) return;
+  const scrubPx = Math.round(
+    window.innerHeight * servicesTimeline.duration() * SERVICES_SCRUB_MULT
+  );
+  servicesScrubPxCached = scrubPx;
+  const st = ScrollTrigger.getById('servicesScrub');
+  if (st) st.vars.end = `+=${scrubPx}`;
+  syncServicesSectionHeight(scrubPx);
+  ScrollTrigger.refresh();
+  window.dispatchEvent(new CustomEvent('servicesScrubReady'));
+}
 
 function setBoomFloatActive(timelineTime) {
-  boomFloatActive = (timelineTime >= 2.42 && timelineTime < 5.42);
+  boomFloatActive = (timelineTime >= 2.42 && timelineTime < BOOM_FLOAT_END);
 }
 
 function loadBoomerang() {
@@ -156,11 +263,15 @@ function loadBoomerang() {
   new GLTFLoader().load('assets/models/ra_final.glb', (gltf) => {
     const boomMesh = gltf.scene;
 
+    boomMeshes = [];
     boomMesh.traverse(child => {
       if (child.isMesh) {
+        child.material = child.material.clone();
         child.material.side = THREE.DoubleSide;
+        child.material.transparent = true;
+        child.material.opacity = 1;
         child.material.depthWrite = true;
-        child.material.transparent = false;
+        boomMeshes.push(child);
       }
     });
 
@@ -187,45 +298,65 @@ function loadBoomerang() {
 
     const servicesTl = gsap.timeline({
       scrollTrigger: {
+        id: 'servicesScrub',
         trigger: '#services',
         start: 'top 10%',
-        end: 'bottom bottom',
+        end: () => `+=${Math.round(window.innerHeight * 2.65)}`,
         scrub: true,
         anticipatePin: 1,
-        onEnter: () => { boomerang.visible = true; },
-        onLeaveBack: () => { boomerang.visible = false; },
+        onEnter: () => {
+          boomerang.visible = true;
+          setBoomOpacity(1);
+        },
+        onLeaveBack: () => {
+          setModelOpacity(1);
+        },
         onUpdate: (self) => {
           setBoomFloatActive(self.progress * servicesTl.duration());
         },
       },
       defaults: { ease: 'none' },
-      onUpdate: () => setBoomFloatActive(servicesTl.time()),
+      onUpdate: () => {
+        setBoomFloatActive(servicesTl.time());
+        const hp = window.__handoffProgress || 0;
+        if (hp > 0 && window.__raHandoff) {
+          window.__raHandoff.applyHandoffFade(hp);
+        }
+      },
     });
 
-    // Mutanabi exits + boomerang enters simultaneously (no white gap)
+    // Statue fades in place; camera resets after fade starts; boomerang enters
+    const statueExit = { opacity: 1 };
     servicesTl
-      .to(model.position, { x: -10 * vScale, duration: 0.5, ease: 'power2.in' }, 0)
+      .to(statueExit, {
+        opacity: 0,
+        duration: 0.55,
+        ease: 'power1.in',
+        onUpdate: () => setModelOpacity(statueExit.opacity),
+      }, 0)
       .to(texts[1], { opacity: 0, duration: 0.3 }, 0)
-      .to(camera.position, { y: 1.1, z: 4.8, duration: 0.5 }, 0)
+      .to(camera.position, { y: 1.1, z: 4.8, duration: 0.55, ease: 'power1.inOut' }, 0.35)
       .to(boomerang.position, { x: BOOM_HOLD_LEFT.x, y: BOOM_HOLD_LEFT.y, duration: 1.8, ease: 'power3.out' }, 0)
       .to(boomerang.rotation, BOOM_REST_ROT, 0)
       .to(servicesTexts[0], { opacity: 1, duration: 0.3 }, 0.6)
       .to(servicesTexts[0], { opacity: 0, duration: 0.3 }, 1.2);
 
-    // Phase 2: slide to right — hold centered beside copy
+    // Phase 2: slide to right — longer hold on 2nd left paragraph
     servicesTl
       .to(boomerang.position, { x: BOOM_HOLD_RIGHT.x, y: BOOM_HOLD_RIGHT.y, duration: 1 }, 1.5)
       .to(boomerang.rotation, BOOM_REST_ROT, 1.5)
-      .to(servicesTexts[1], { opacity: 1, duration: 0.3 }, 3.8)
-      .to(servicesTexts[1], { opacity: 0, duration: 0.3 }, 4.3);
+      .to(servicesTexts[1], { opacity: 1, duration: 0.35 }, 3.4)
+      .to(servicesTexts[1], { opacity: 0, duration: 0.35 }, 4.6);
 
-    // Phase 3: hold on right, then exit
+    // Phase 3: last paragraph holds full opacity — fade + exit happen in reel handoff
     servicesTl
-      .to(servicesTexts[2], { opacity: 1, duration: 0.3 }, 4.7)
-      .to(servicesTexts[2], { opacity: 0, duration: 0.3 }, 5.1)
-      .to(boomerang.position, { x: 12 * vScale, y: BOOM_HOLD_RIGHT.y, duration: 0.4, ease: 'power2.in' }, 5.3);
+      .to(servicesTexts[2], { opacity: 1, duration: 0.3 }, 5.1)
+      .to({}, { duration: 0.7 }, 5.4);
 
-    ScrollTrigger.refresh();
+    servicesTimeline = servicesTl;
+    window.__raHandoff.setBoomOpacity = setBoomOpacity;
+
+    refreshServicesScrollMetrics();
   }, undefined, (err) => {
     console.error('Failed to load ra_final model:', err);
   });
@@ -235,7 +366,7 @@ let floatTime = 0;
 function renderLoop() {
   requestAnimationFrame(renderLoop);
   floatTime += 0.008;
-  if (model) {
+  if (model && modelFloatAllowed) {
     model.position.x += Math.sin(floatTime) * 0.001;
     model.position.y += Math.cos(floatTime * 0.7) * 0.0005;
   }
@@ -267,4 +398,6 @@ window.addEventListener('resize', () => {
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(maxRendererPixelRatio());
+  clearTimeout(servicesResizeTimer);
+  servicesResizeTimer = setTimeout(refreshServicesScrollMetrics, 150);
 });
